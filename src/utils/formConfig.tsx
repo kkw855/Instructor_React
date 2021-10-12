@@ -1,12 +1,21 @@
 import React from "react";
-import InputField from "../component/Input";
+import Input from "../component/Input";
 
-type RenderInputProps = {
-  handleChange: (event: React.FormEvent<HTMLInputElement>) => void;
+type RenderInput = (
+  handleChange: (event: React.FormEvent<HTMLInputElement>) => void,
+  value: string,
+  isValid: boolean,
+  error: string,
+  key: string,
+) => JSX.Element;
+
+export type InputObj = {
+  renderInput: RenderInput;
+  label: string;
   value: string;
-  isValid: boolean;
+  valid: boolean;
   errorMessage: string;
-  key: string;
+  touched: boolean;
 };
 
 function createFormFieldConfig(
@@ -14,7 +23,7 @@ function createFormFieldConfig(
   name: string,
   type: string,
   defaultValue = "",
-) {
+): InputObj {
   return {
     renderInput: (
       handleChange: (event: React.FormEvent<HTMLInputElement>) => void,
@@ -24,7 +33,7 @@ function createFormFieldConfig(
       key: string,
     ) => {
       return (
-        <InputField
+        <Input
           key={key}
           name={name}
           type={type}
@@ -43,3 +52,19 @@ function createFormFieldConfig(
     touched: false,
   };
 }
+
+// object representation of signup form
+export const signupForm = [
+  {
+    ...createFormFieldConfig("Full Name", "name", "text"),
+  },
+  {
+    ...createFormFieldConfig("Email", "email", "email"),
+  },
+  {
+    ...createFormFieldConfig("Password", "password", "password"),
+  },
+  {
+    ...createFormFieldConfig("Confirm Password", "confirmPassword", "password"),
+  },
+];

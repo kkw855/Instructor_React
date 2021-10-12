@@ -16,6 +16,12 @@ module.exports = {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
   },
   mode: "development",
+  devServer: {
+    port: 8081,
+    // URL 에 주소 입력하면 발생하는 Cannot GET 에러 방지
+    // 해당 URL 로 서버에게 GET 요청을 보내기 때문에 에러 발생
+    historyApiFallback: true
+  },
   module: {
     rules: [
       // 타입스크립트

@@ -13,7 +13,7 @@ type InputProps = {
 
 const Container = styled.div``;
 
-const InputField = ({
+const Input = ({
   errorMessage,
   handleChange,
   isValid,
@@ -31,4 +31,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default Input;
