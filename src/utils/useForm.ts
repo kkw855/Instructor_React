@@ -1,8 +1,8 @@
-import { InputObj } from "./formConfig";
-import { useCallback, useState } from "react";
+import { InputObj, SignUpForm } from "./formConfig";
+import React, { useCallback, useState } from "react";
 
-function useForm(inputObjs: Array<InputObj>) {
-  const [form, setForm] = useState<Array<InputObj>>(inputObjs);
+function useForm(signUpForm: SignUpForm) {
+  const [form, setForm] = useState(signUpForm);
 
   function renderFormInputs() {
     return Object.values(form).map((formObj) => {
@@ -11,11 +11,46 @@ function useForm(inputObjs: Array<InputObj>) {
     });
   }
 
-  const onInputChange = useCallback((event) => {
-    // not yet implemented
-  }, []);
+  const isInputFieldValid = useCallback(
+    (inputObj: InputObj) => {
+      for (const rule of inputObj.validationRules) {
+        if (!rule.validate(inputObj.value, form)) {
+          inputObj.errorMessage = rule.message;
+          return false;
+        }
+      }
 
-  return { renderFormInputs };
+      return true;
+    },
+    [form],
+  );
+
+  const onInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target;
+      const inputObj = { ...form[name] };
+
+      inputObj.value = value;
+      const isValidInput = isInputFieldValid(inputObj);
+
+      if (isValidInput && !inputObj.valid) {
+        inputObj.valid = true;
+      } else if (!isValidInput && inputObj.valid) {
+        inputObj.valid = false;
+      }
+
+      inputObj.touched = true;
+      setForm({ ...form, [name]: inputObj });
+    },
+    [form, isInputFieldValid],
+  );
+
+  const isFormValid = useCallback(
+    () => Object.values(form).every((inputObj) => inputObj.valid),
+    [form],
+  );
+
+  return { renderFormInputs, isFormValid };
 }
 
 export default useForm;
