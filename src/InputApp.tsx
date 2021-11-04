@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  RouteComponentProps,
-  Switch,
-} from "react-router-dom";
+import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import SignupForm from "./component/SignupForm";
 
 const InputApp = ({ match }: RouteComponentProps) => {

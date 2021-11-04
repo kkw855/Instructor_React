@@ -1,7 +1,6 @@
 import React from "react";
 import Input from "../component/Input";
 import {
-  createValidationRule,
   maxLengthRule,
   minLengthRule,
   passwordMatchRule,
@@ -20,6 +19,7 @@ type RenderInput = (
 export type InputObj = {
   renderInput: RenderInput;
   label: string;
+  name: string;
   value: string;
   valid: boolean;
   errorMessage: string;
@@ -27,12 +27,8 @@ export type InputObj = {
   validationRules: ValidationRule[];
 };
 
-export type SignUpForm = {
+export type FormObj = {
   [key: string]: InputObj;
-  name: InputObj;
-  email: InputObj;
-  password: InputObj;
-  confirmPassword: InputObj;
 };
 
 function createFormFieldConfig(
@@ -64,6 +60,7 @@ function createFormFieldConfig(
       );
     },
     label,
+    name,
     value: defaultValue,
     valid: false,
     errorMessage: "",
@@ -73,7 +70,7 @@ function createFormFieldConfig(
 }
 
 // object representation of signup form
-export const signupForm: SignUpForm = {
+export const signupForm: FormObj = {
   name: {
     ...createFormFieldConfig("Full Name", "name", "text", [
       requiredRule("name"),
@@ -103,4 +100,31 @@ export const signupForm: SignUpForm = {
       [passwordMatchRule()],
     ),
   },
+};
+
+export const createCourseForm = (id: string, description: string) => {
+  return {
+    id: {
+      ...createFormFieldConfig(
+        "Id",
+        "id",
+        "number",
+        [requiredRule("id"), minLengthRule("id", 3), maxLengthRule("id", 25)],
+        id,
+      ),
+    },
+    description: {
+      ...createFormFieldConfig(
+        "Description",
+        "description",
+        "text",
+        [
+          requiredRule("description"),
+          minLengthRule("description", 10),
+          maxLengthRule("description", 25),
+        ],
+        description,
+      ),
+    },
+  };
 };

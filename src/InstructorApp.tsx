@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Route, RouteComponentProps } from "react-router-dom";
 import ListCourseComponent from "./component/ListCourseComponent";
 import CourseComponent from "./component/CourseComponent";
 

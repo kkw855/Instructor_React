@@ -1,8 +1,8 @@
-import { InputObj, SignUpForm } from "./formConfig";
+import { FormObj, InputObj } from "./formConfig";
 import React, { useCallback, useState } from "react";
 
-function useForm(signUpForm: SignUpForm) {
-  const [form, setForm] = useState(signUpForm);
+function useForm(formObj: FormObj) {
+  const [form, setForm] = useState(formObj);
 
   function renderFormInputs() {
     return Object.values(form).map((formObj) => {
@@ -29,6 +29,8 @@ function useForm(signUpForm: SignUpForm) {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.target;
       const inputObj = { ...form[name] };
+
+      console.log("onInputChange: ", name, value);
 
       inputObj.value = value;
       const isValidInput = isInputFieldValid(inputObj);
